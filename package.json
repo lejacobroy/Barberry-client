@@ -1,0 +1,14 @@
+{
+  "name": "barberry-client",
+  "version": "0.0.1",
+  "description": "Gathers weather data from sensors and sends it to the server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jacob Roy",
+  "license": "ISC",
+  "dependencies": {
+    "rpio": "^0.9.22"
+  }
+}
