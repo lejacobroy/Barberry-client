@@ -1,8 +1,8 @@
 var rpio = require('rpio');
-var sleep = require('sleep');
+//var sleep = require('sleep');
 
-var date = new Date();
-var current_hour = date.getHours();
+//var date = new Date();
+//var current_hour = date.getHours();
 
 var i2cdata = 3;
 var i2cclock = 5;
@@ -15,10 +15,10 @@ var y = 0;
 /*init done*/
 
 /*init GPIO*/
-rpio.init({gpiomem: true});    /* Use /dev/mem for i²c/PWM/SPI */
+rpio.init({gpiomem: false});    /* Use /dev/mem for i²c/PWM/SPI */
 rpio.init({mapping: 'physical'});   /* Use the GPIOxx numbering */
 rpio.on('warn', function() {});
-rpio.close(i2cdata, rpio.PIN_RESET);
+//rpio.close(i2cdata, rpio.PIN_RESET);
 rpio.close(i2cclock, rpio.PIN_RESET);
 rpio.close(dhtdata, rpio.PIN_RESET);
 rpio.close(photocelldata, rpio.PIN_RESET);
@@ -28,11 +28,20 @@ rpio.close(vanedata, rpio.PIN_RESET);
  * being actived, so is safe for devices which require a stable setup.
  */
 
-rpio.open(i2cdata, rpio.INPUT);
-rpio.open(i2cclock, rpio.OUTPUT, rpio.LOW);
-rpio.open(dhtdata, rpio.INPUT);
-rpio.open(photocelldata, rpio.INPUT);
-rpio.open(vanedata, rpio.INPUT);
+rpio.i2cBegin();
+rpio.i2cSetSlaveAddress(0x20);
+rpio.i2cSetBaudRate(100000);
+
+var rxbuf = new Buffer(32);
+
+rpio.i2cRead(rxbuf, 16);        /* Reads 16 bytes */
+
+rpio.i2cEnd();
+//rpio.open(i2cdata, rpio.INPUT);
+//rpio.open(i2cclock, rpio.OUTPUT, rpio.LOW);
+//rpio.open(dhtdata, rpio.INPUT);
+//rpio.open(photocelldata, rpio.INPUT);
+//rpio.open(vanedata, rpio.INPUT);
 /*
  * The sleep functions block, but rarely in these simple programs does
  * one care about that.  Use a setInterval()/setTimeout() loop instead
@@ -53,7 +62,7 @@ rpio.open(vanedata, rpio.INPUT);
 while(1){
 
 console.log('i2cdata is currently ' + (rpio.read(i2cdata)));
-console.log('dhtdata is currently ' + (rpio.read(dhtdata)));
-console.log('photocelldata is currently ' + (rpio.read(photocelldata)));
-console.log('vanedata is currently ' + (rpio.read(vanedata)));
+//console.log('dhtdata is currently ' + (rpio.read(dhtdata)));
+//console.log('photocelldata is currently ' + (rpio.read(photocelldata)));
+//console.log('vanedata is currently ' + (rpio.read(vanedata)));
 }
