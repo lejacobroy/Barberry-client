@@ -12,6 +12,7 @@ board.on('ready', () => {
     // on http://www.whatismyelevation.com/.
     // `12` is the elevation (meters) for where I live in Brooklyn
     elevation: 10,
+    address: 'P1-3',
   });
 
   altitude.on("data", function() {
